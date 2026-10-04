@@ -899,14 +899,17 @@
           }
         }
 
-        // 3. ニュース一覧の自動反映＆リンク化
+        // 3. ニュース一覧の自動反映（タイトル崩れ防止 & タグ完全除去）
         if (data && data.news && data.news.length > 0) {
-          const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content') || document.querySelector('#news');
+          const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content');
           if (newsContainer) {
             const listEl = newsContainer.querySelector('ul') || newsContainer.querySelector('.news-items') || newsContainer;
             listEl.innerHTML = '';
 
             data.news.forEach(item => {
+              // 余分な「TICKET2026/10/4」などの重複テキストを除去・整形
+              let cleanTitle = item.title.replace(/^(TICKET|EVENT|OTHER|GAME|CLUB)\s*\d{4}\/\d{1,2}\/\d{1,2}\s*/i, '');
+
               const row = document.createElement('div');
               row.style.display = 'flex';
               row.style.alignItems = 'center';
@@ -917,7 +920,7 @@
               row.innerHTML = `
                 <span style="color: #888; font-size: 13px; min-width: 90px; flex-shrink: 0;">${item.date}</span>
                 <a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color: #333; text-decoration: none; font-size: 14px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  ${item.title}
+                  ${cleanTitle}
                 </a>
               `;
               listEl.appendChild(row);
@@ -925,12 +928,21 @@
           }
         }
 
-        // 4. 試合予定 (SCHEDULE) の自動反映
+        // 4. 試合予定 (SCHEDULE) の自動反映（見出しタイトル消去防止）
         if (data && data.schedule && data.schedule.length > 0) {
-          const scheduleContainer = document.querySelector('#schedule .main-content') || document.querySelector('#schedule') || document.querySelector('.schedule-list');
-          if (scheduleContainer) {
-            const listEl = scheduleContainer.querySelector('ul') || scheduleContainer.querySelector('.schedule-items') || scheduleContainer;
-            listEl.innerHTML = '';
+          const scheduleSection = document.getElementById('schedule');
+          if (scheduleSection) {
+            // 見出し(h2等)を消さないよう、リスト専用コンテナ(ul, .schedule-list, .main-content)を対象にする
+            let listEl = scheduleSection.querySelector('ul') || scheduleSection.querySelector('.schedule-list') || scheduleSection.querySelector('.main-content');
+            
+            // リストコンテナが無い場合は作成して見出しの下に挿入
+            if (!listEl || listEl === scheduleSection) {
+              listEl = document.createElement('div');
+              listEl.className = 'schedule-list';
+              scheduleSection.appendChild(listEl);
+            } else {
+              listEl.innerHTML = '';
+            }
 
             data.schedule.forEach(item => {
               const card = document.createElement('div');
