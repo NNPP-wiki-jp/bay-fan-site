@@ -1,1 +1,10 @@
-{}
+{
+  "latest_game": {
+    "date": "10月4日(日)",
+    "status": "試合終了",
+    "home_team": "DeNA",
+    "home_score": "2",
+    "away_team": "阪神",
+    "away_score": "1"
+  }
+}
