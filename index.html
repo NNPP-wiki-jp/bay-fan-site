@@ -899,7 +899,7 @@
           }
         }
 
-        // 3. ニュース一覧の自動反映（タイトル崩れ防止 & タグ完全除去）
+        // 3. ニュース一覧の自動反映
         if (data && data.news && data.news.length > 0) {
           const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content');
           if (newsContainer) {
@@ -907,7 +907,6 @@
             listEl.innerHTML = '';
 
             data.news.forEach(item => {
-              // 余分な「TICKET2026/10/4」などの重複テキストを除去・整形
               let cleanTitle = item.title.replace(/^(TICKET|EVENT|OTHER|GAME|CLUB)\s*\d{4}\/\d{1,2}\/\d{1,2}\s*/i, '');
 
               const row = document.createElement('div');
@@ -928,19 +927,24 @@
           }
         }
 
-        // 4. 試合予定 (SCHEDULE) の自動反映（見出しタイトル消去防止）
+        // 4. 試合予定 (SCHEDULE) の自動反映（重複防止修正）
         if (data && data.schedule && data.schedule.length > 0) {
-          const scheduleSection = document.getElementById('schedule');
+          const scheduleSection = document.getElementById('schedule') || document.querySelector('.schedule-section');
           if (scheduleSection) {
-            // 見出し(h2等)を消さないよう、リスト専用コンテナ(ul, .schedule-list, .main-content)を対象にする
-            let listEl = scheduleSection.querySelector('ul') || scheduleSection.querySelector('.schedule-list') || scheduleSection.querySelector('.main-content');
+            // リストを入れる既存コンテナを特定（なければ見出し以外をクリアして作成）
+            let listEl = scheduleSection.querySelector('ul') || scheduleSection.querySelector('.schedule-list') || scheduleSection.querySelector('.schedule-items');
             
-            // リストコンテナが無い場合は作成して見出しの下に挿入
-            if (!listEl || listEl === scheduleSection) {
+            if (!listEl) {
+              // 見出し(h2/h3)を残して他要素を消去
+              const header = scheduleSection.querySelector('h2, h3, .section-title, .schedule-header');
+              scheduleSection.innerHTML = '';
+              if (header) scheduleSection.appendChild(header);
+              
               listEl = document.createElement('div');
               listEl.className = 'schedule-list';
               scheduleSection.appendChild(listEl);
             } else {
+              // 既存リストの要素（静的な3件）をすべて消去
               listEl.innerHTML = '';
             }
 
