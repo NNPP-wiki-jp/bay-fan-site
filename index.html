@@ -570,21 +570,21 @@
         </div>
 
         <div class="score">
-          <div class="score-date">
-            2026.10.03 レギュラーシーズン
+          <div class="score-date" id="score-date">
+            最新試合
           </div>
 
           <div class="teams">
             <div>
-              <div class="team">DeNA</div>
-              <div class="team-score">5</div>
+              <div class="team" id="home-team">DeNA</div>
+              <div class="team-score" id="home-score">-</div>
             </div>
 
-            <div class="vs">-</div>
+            <div class="vs" id="game-status">-</div>
 
             <div>
-              <div class="team">巨人</div>
-              <div class="team-score">3</div>
+              <div class="team" id="away-team">相手</div>
+              <div class="team-score" id="away-score">-</div>
             </div>
           </div>
         </div>
@@ -834,6 +834,7 @@
 
 
   <script>
+    // ハンバーガーメニュー制御
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
 
@@ -846,6 +847,28 @@
         nav.classList.remove("open");
       });
     });
+
+    // game_data.jsonから最新試合スコアを自動取得・反映
+    fetch('game_data.json?cache=' + new Date().getTime())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('JSON読み込み失敗');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data && data.latest_game) {
+          const game = data.latest_game;
+          document.getElementById('score-date').textContent = game.date + ' ' + (game.status || 'レギュラーシーズン');
+          document.getElementById('home-team').textContent = game.home_team;
+          document.getElementById('home-score').textContent = game.home_score;
+          document.getElementById('away-team').textContent = game.away_team;
+          document.getElementById('away-score').textContent = game.away_score;
+        }
+      })
+      .catch(error => {
+        console.log('データ未設定または取得エラー:', error);
+      });
   </script>
 
 </body>
