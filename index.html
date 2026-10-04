@@ -904,8 +904,6 @@
           const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content') || document.querySelector('#news');
           if (newsContainer) {
             const listEl = newsContainer.querySelector('ul') || newsContainer.querySelector('.news-items') || newsContainer;
-            
-            // 既存のリストだけを差し替え
             if (listEl) {
               listEl.innerHTML = '';
 
@@ -931,46 +929,63 @@
           }
         }
 
-        // 4. 試合予定 (SCHEDULE) の安全な自動反映
+        // 4. 試合予定 (SCHEDULE) の安全な動的描画
         if (data && data.schedule) {
-          // ピンポイントで試合予定のコンテナを取得
-          const scheduleContainer = document.querySelector('.schedule-list') || 
-                                    document.querySelector('.schedule-items') || 
-                                    document.querySelector('#schedule .main-content') || 
-                                    document.querySelector('#schedule ul');
+          // 試合予定の見出し（試合予定 / SCHEDULE）の親要素を取得
+          const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, .section-title, div'));
+          const targetHeading = headings.find(el => {
+            const txt = el.textContent || '';
+            return txt.includes('試合予定') || txt.includes('SCHEDULE');
+          });
 
-          if (scheduleContainer) {
-            scheduleContainer.innerHTML = ''; // 試合予定のリスト内だけをクリア
-
-            if (data.schedule.length > 0) {
-              data.schedule.forEach(item => {
-                const card = document.createElement('div');
-                card.style.display = 'flex';
-                card.style.alignItems = 'center';
-                card.style.justifyContent = 'space-between';
-                card.style.padding = '16px 20px';
-                card.style.marginBottom = '12px';
-                card.style.backgroundColor = '#fff';
-                card.style.border = '1px solid #e0e0e0';
-                card.style.borderRadius = '4px';
-
-                card.innerHTML = `
-                  <div style="display: flex; flex-direction: column; min-width: 70px;">
-                    <span style="color: #888; font-size: 14px; font-weight: bold;">${item.date}</span>
-                    <span style="color: #aaa; font-size: 11px;">${item.day}</span>
-                  </div>
-                  <div style="flex-grow: 1; margin: 0 20px;">
-                    <div style="font-size: 16px; font-weight: bold; color: #111;">${item.matchup}</div>
-                    <div style="font-size: 12px; color: #888; margin-top: 4px;">${item.stadium}</div>
-                  </div>
-                  <div style="font-size: 16px; font-weight: bold; color: #005bac;">
-                    ${item.time}
-                  </div>
-                `;
-                scheduleContainer.appendChild(card);
+          if (targetHeading) {
+            // 見出しの親ブロックを取得
+            let parentBlock = targetHeading.parentElement;
+            if (parentBlock) {
+              // 見出し・ヘッダー以外の直下要素（古いカード群）を特定して削除
+              const children = Array.from(parentBlock.children);
+              children.forEach(child => {
+                if (child !== targetHeading && !child.contains(targetHeading) && !child.classList.contains('section-title') && !child.classList.contains('schedule-header')) {
+                  child.remove();
+                }
               });
-            } else {
-              scheduleContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">現在予定されている試合はありません</p>';
+
+              // 新しい動的カードラッパーを作成
+              const wrapper = document.createElement('div');
+              wrapper.className = 'schedule-dynamic-wrapper';
+
+              if (data.schedule.length > 0) {
+                data.schedule.forEach(item => {
+                  const card = document.createElement('div');
+                  card.style.display = 'flex';
+                  card.style.alignItems = 'center';
+                  card.style.justifyContent = 'space-between';
+                  card.style.padding = '16px 20px';
+                  card.style.marginBottom = '12px';
+                  card.style.backgroundColor = '#fff';
+                  card.style.border = '1px solid #e0e0e0';
+                  card.style.borderRadius = '4px';
+
+                  card.innerHTML = `
+                    <div style="display: flex; flex-direction: column; min-width: 70px;">
+                      <span style="color: #888; font-size: 14px; font-weight: bold;">${item.date}</span>
+                      <span style="color: #aaa; font-size: 11px;">${item.day}</span>
+                    </div>
+                    <div style="flex-grow: 1; margin: 0 20px;">
+                      <div style="font-size: 16px; font-weight: bold; color: #111;">${item.matchup}</div>
+                      <div style="font-size: 12px; color: #888; margin-top: 4px;">${item.stadium}</div>
+                    </div>
+                    <div style="font-size: 16px; font-weight: bold; color: #005bac;">
+                      ${item.time}
+                    </div>
+                  `;
+                  wrapper.appendChild(card);
+                });
+              } else {
+                wrapper.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">現在予定されている試合はありません</p>';
+              }
+
+              parentBlock.appendChild(wrapper);
             }
           }
         }
