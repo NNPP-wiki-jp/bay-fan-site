@@ -900,11 +900,10 @@
           }
         }
 
-        // 3. ニュース一覧の自動反映＆リンク化
+        // 3. ニュース一覧の自動反映＆リンク化（タグなしシンプル表示）
         if (data && data.news && data.news.length > 0) {
           const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content') || document.querySelector('#news');
           if (newsContainer) {
-            // 一覧エリアの直下要素を入れ替え
             const listEl = newsContainer.querySelector('ul') || newsContainer.querySelector('.news-items') || newsContainer;
             listEl.innerHTML = '';
 
@@ -914,17 +913,10 @@
               row.style.alignItems = 'center';
               row.style.padding = '12px 0';
               row.style.borderBottom = '1px solid #eee';
-              row.style.gap = '12px';
-
-              // カテゴリごとの色分け設定
-              let catBg = '#124483'; // デフォルト紺
-              if (item.category.includes('TICKET')) catBg = '#03396c';
-              if (item.category.includes('EVENT')) catBg = '#e69500';
-              if (item.category.includes('OTHER')) catBg = '#888888';
+              row.style.gap = '16px';
 
               row.innerHTML = `
-                <span style="color: #888; font-size: 13px; min-width: 80px;">${item.date}</span>
-                <span style="background: ${catBg}; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">${item.category}</span>
+                <span style="color: #888; font-size: 13px; min-width: 90px; flex-shrink: 0;">${item.date}</span>
                 <a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color: #333; text-decoration: none; font-size: 14px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   ${item.title}
                 </a>
