@@ -850,7 +850,7 @@
       });
     }
 
-    // game_data.jsonから最新試合スコアと順位表を自動取得・反映
+    // game_data.jsonから全データを自動取得・反映
     fetch('game_data.json?cache=' + new Date().getTime())
       .then(response => {
         if (!response.ok) {
@@ -877,11 +877,10 @@
 
         // 2. セ・リーグ順位表の自動反映
         if (data && data.standings && data.standings.length > 0) {
-          // 順位表が入っているコンテナを取得
           const rankingSection = document.getElementById('ranking') || document.querySelector('.side-box');
           if (rankingSection) {
             const container = rankingSection.querySelector('.side-content') || rankingSection;
-            container.innerHTML = ''; // 既存の静的ダミー行をクリア
+            container.innerHTML = '';
 
             data.standings.forEach(item => {
               const row = document.createElement('div');
@@ -897,6 +896,40 @@
                 <span style="color: #666;">${item.games_behind}</span>
               `;
               container.appendChild(row);
+            });
+          }
+        }
+
+        // 3. ニュース一覧の自動反映＆リンク化
+        if (data && data.news && data.news.length > 0) {
+          const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content') || document.querySelector('#news');
+          if (newsContainer) {
+            // 一覧エリアの直下要素を入れ替え
+            const listEl = newsContainer.querySelector('ul') || newsContainer.querySelector('.news-items') || newsContainer;
+            listEl.innerHTML = '';
+
+            data.news.forEach(item => {
+              const row = document.createElement('div');
+              row.style.display = 'flex';
+              row.style.alignItems = 'center';
+              row.style.padding = '12px 0';
+              row.style.borderBottom = '1px solid #eee';
+              row.style.gap = '12px';
+
+              // カテゴリごとの色分け設定
+              let catBg = '#124483'; // デフォルト紺
+              if (item.category.includes('TICKET')) catBg = '#03396c';
+              if (item.category.includes('EVENT')) catBg = '#e69500';
+              if (item.category.includes('OTHER')) catBg = '#888888';
+
+              row.innerHTML = `
+                <span style="color: #888; font-size: 13px; min-width: 80px;">${item.date}</span>
+                <span style="background: ${catBg}; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px;">${item.category}</span>
+                <a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color: #333; text-decoration: none; font-size: 14px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${item.title}
+                </a>
+              `;
+              listEl.appendChild(row);
             });
           }
         }
