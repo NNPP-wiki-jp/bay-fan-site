@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YOKOHAMA BAYSTARS FAN SITE</title>
+
+  <style>
+    :root {
+      --navy: #0b1f3a;
+      --blue: #005bac;
+      --light-blue: #eaf4ff;
+      --white: #ffffff;
+      --gray: #f4f5f7;
+      --text: #172033;
+      --muted: #7b8494;
+      --border: #dfe4ea;
+      --red: #e53935;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        "YuGothic",
+        Meiryo,
+        sans-serif;
+      color: var(--text);
+      background: #f7f8fa;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      background: var(--navy);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      height: 72px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 900;
+      border: 2px solid rgba(255,255,255,.7);
+    }
+
+    .logo-text {
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      display: block;
+      font-size: 10px;
+      color: #a9c9e9;
+      letter-spacing: 0.15em;
+      margin-top: 3px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
+    .nav a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 17px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #dce8f5;
+      border-bottom: 3px solid transparent;
+      transition: 0.2s;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      color: white;
+      border-bottom-color: #49a8ff;
+      background: rgba(255,255,255,.04);
+    }
+
+    .hamburger {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.3);
+      background: transparent;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: 4px auto;
+      background: white;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(6, 25, 49, .96),
+          rgba(6, 25, 49, .82)
+        ),
+        linear-gradient(135deg, #0874c9, #071d38);
+      color: white;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 58px 24px 52px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.15;
+      letter-spacing: .02em;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 span {
+      color: #54b0ff;
+    }
+
+    .hero-description {
+      color: #cbd9e8;
+      max-width: 600px;
+      font-size: 15px;
+    }
+
+    .hero-card {
+      background: white;
+      color: var(--text);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    .hero-card-title {
+      padding: 12px 18px;
+      background: var(--blue);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+
+    .score {
+      padding: 22px;
+      text-align: center;
+    }
+
+    .score-date {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .teams {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .team {
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .team-score {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--navy);
+    }
+
+    .vs {
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 42px 24px 80px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 36px;
+    }
+
+    .section {
+      margin-bottom: 42px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--navy);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+    }
+
+    .section-heading h2 {
+      font-size: 21px;
+      letter-spacing: .03em;
+    }
+
+    .section-heading span {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
+
+    /* =========================
+       NEWS
+    ========================= */
+
+    .news-list {
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .news-item {
+      display: grid;
+      grid-template-columns: 95px 1fr;
+      gap: 18px;
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: background .2s;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-item:hover {
+      background: #f7fbff;
+    }
+
+    .news-date {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .news-category {
+      display: inline-block;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      margin-right: 8px;
+    }
+
+    .news-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* =========================
+       CHAT
+    ========================= */
+
+    .chat-box {
+      background: var(--navy);
+      color: white;
+      padding: 22px;
+      border-radius: 4px;
+    }
+
+    .chat-box h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .chat-box p {
+      color: #b8c9dc;
+      font-size: 12px;
+      margin-bottom: 17px;
+    }
+
+    .chat-button {
+      display: block;
+      text-align: center;
+      background: #1685db;
+      color: white;
+      padding: 11px;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    /* =========================
+       SCHEDULE
+    ========================= */
+
+    .schedule {
+      display: grid;
+      gap: 8px;
+    }
+
+    .game {
+      background: white;
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 85px 1fr 80px;
+      align-items: center;
+      padding: 13px 16px;
+    }
+
+    .game-date {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .game-opponent {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .game-place {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .game-time {
+      text-align: right;
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .side-box {
+      background: white;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .side-title {
+      padding: 13px 16px;
+      background: var(--navy);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .side-content {
+      padding: 17px;
+    }
+
+    .rank {
+      display: grid;
+      grid-template-columns: 28px 1fr 50px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .rank:last-child {
+      border-bottom: none;
+    }
+
+    .rank:first-child {
+      font-weight: 900;
+      color: var(--blue);
+    }
+
+    .links a {
+      display: block;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .links a:last-child {
+      border-bottom: none;
+    }
+
+    .links a:hover {
+      color: var(--blue);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: #07182d;
+      color: #8294a9;
+      padding: 35px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+      .header-inner {
+        height: 62px;
+      }
+
+      .nav {
+        display: none;
+        position: absolute;
+        top: 62px;
+        left: 0;
+        width: 100%;
+        height: auto;
+        background: var(--navy);
+        flex-direction: column;
+        border-top: 1px solid rgba(255,255,255,.1);
+      }
+
+      .nav.open {
+        display: flex;
+      }
+
+      .nav a {
+        width: 100%;
+        height: auto;
+        padding: 15px 24px;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 38px 20px;
+        gap: 28px;
+      }
+
+      .hero-card {
+        max-width: 500px;
+      }
+
+      .container {
+        padding: 30px 16px 60px;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .news-item {
+        grid-template-columns: 75px 1fr;
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .news-title {
+        font-size: 13px;
+      }
+
+      .game {
+        grid-template-columns: 70px 1fr 60px;
+        padding: 12px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+
+      <a href="#" class="logo">
+        <div class="logo-mark">DB</div>
+        <div class="logo-text">
+          BAYSTARS FAN
+          <span>YOKOHAMA BASEBALL</span>
+        </div>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a href="#" class="active">ホーム</a>
+        <a href="#chat">雑談</a>
+        <a href="#results">試合結果</a>
+        <a href="#schedule">試合予定</a>
+        <a href="#news">ニュース</a>
+        <a href="#ranking">順位表</a>
+      </nav>
+
+      <button class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div>
+        <h1>
+          横浜を、<br>
+          <span>もっと熱く。</span>
+        </h1>
+
+        <p class="hero-description">
+          横浜DeNAベイスターズを応援するファンサイト。<br>
+          試合結果、試合予定、ニュース、ファン同士の雑談まで。
+        </p>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-title">
+          LATEST GAME
+        </div>
+
+        <div class="score">
+          <div class="score-date">
+            2026.10.03　レギュラーシーズン
+          </div>
+
+          <div class="teams">
+            <div>
+              <div class="team">DeNA</div>
+              <div class="team-score">5</div>
+            </div>
+
+            <div class="vs">-</div>
+
+            <div>
+              <div class="team">巨人</div>
+              <div class="team-score">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <div class="layout">
+
+      <!-- CONTENT -->
+      <div>
+
+        <!-- NEWS -->
+        <section class="section" id="news">
+
+          <div class="section-heading">
+            <h2>ニュース</h2>
+            <span>NEWS</span>
+          </div>
+
+          <div class="news-list">
+
+            <a href="#" class="news-item">
+              <div class="news-date">10.04 SUN</div>
+              <div>
+                <span class="news-category">GAME</span>
+                <span class="news-title">
+                  本日の試合に向けてチームが横浜スタジアム入り
+                </span>
+              </div>
+            </a>
+
+            <a href="#" class="news-item">
+              <div class="news-date">10.03 SAT</div>
+              <div>
+                <span class="news-category">RESULT</span>
+                <span class="news-title">
+                  DeNA、終盤の集中打で接戦を制す
+                </span>
+              </div>
+            </a>
+
+            <a href="#" class="news-item">
+              <div class="news-date">10.02 FRI</div>
+              <div>
+                <span class="news-category">TEAM</span>
+                <span class="news-title">
+                  明日の先発投手が発表される
+                </span>
+              </div>
+            </a>
+
+            <a href="#" class="news-item">
+              <div class="news-date">10.01 THU</div>
+              <div>
+                <span class="news-category">NEWS</span>
+                <span class="news-title">
+                  今季終盤戦、チームは最後まで戦い抜く
+                </span>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+
+        <!-- SCHEDULE -->
+        <section class="section" id="schedule">
+
+          <div class="section-heading">
+            <h2>試合予定</h2>
+            <span>SCHEDULE</span>
+          </div>
+
+          <div class="schedule">
+
+            <div class="game">
+              <div class="game-date">10.04<br>SUN</div>
+
+              <div>
+                <div class="game-opponent">
+                  DeNA vs 巨人
+                </div>
+                <div class="game-place">
+                  横浜スタジアム
+                </div>
+              </div>
+
+              <div class="game-time">14:00</div>
+            </div>
+
+            <div class="game">
+              <div class="game-date">10.05<br>MON</div>
+
+              <div>
+                <div class="game-opponent">
+                  DeNA vs 阪神
+                </div>
+                <div class="game-place">
+                  横浜スタジアム
+                </div>
+              </div>
+
+              <div class="game-time">18:00</div>
+            </div>
+
+            <div class="game">
+              <div class="game-date">10.07<br>WED</div>
+
+              <div>
+                <div class="game-opponent">
+                  DeNA vs 広島
+                </div>
+                <div class="game-place">
+                  マツダスタジアム
+                </div>
+              </div>
+
+              <div class="game-time">18:00</div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- CHAT -->
+        <section class="section" id="chat">
+
+          <div class="section-heading">
+            <h2>ファン雑談</h2>
+            <span>CHAT</span>
+          </div>
+
+          <div class="chat-box">
+            <h3>みんなでベイスターズを語ろう。</h3>
+
+            <p>
+              今日の試合、選手、采配、来季の話まで自由に。
+            </p>
+
+            <a href="#" class="chat-button">
+              雑談掲示板を見る →
+            </a>
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- SIDEBAR -->
+      <aside>
+
+        <!-- RANKING -->
+        <div class="side-box" id="ranking">
+
+          <div class="side-title">
+            セ・リーグ順位表
+          </div>
+
+          <div class="side-content">
+
+            <div class="rank">
+              <span>1</span>
+              <span>阪神</span>
+              <span>---</span>
+            </div>
+
+            <div class="rank">
+              <span>2</span>
+              <span>DeNA</span>
+              <span>---</span>
+            </div>
+
+            <div class="rank">
+              <span>3</span>
+              <span>巨人</span>
+              <span>---</span>
+            </div>
+
+            <div class="rank">
+              <span>4</span>
+              <span>広島</span>
+              <span>---</span>
+            </div>
+
+            <div class="rank">
+              <span>5</span>
+              <span>中日</span>
+              <span>---</span>
+            </div>
+
+            <div class="rank">
+              <span>6</span>
+              <span>ヤクルト</span>
+              <span>---</span>
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- LINKS -->
+        <div class="side-box">
+
+          <div class="side-title">
+            CONTENTS
+          </div>
+
+          <div class="side-content links">
+
+            <a href="#">試合結果一覧 →</a>
+            <a href="#">試合予定一覧 →</a>
+            <a href="#">選手名鑑 →</a>
+            <a href="#">チーム成績 →</a>
+            <a href="#">過去の試合 →</a>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        YOKOHAMA BAYSTARS FAN SITE
+      </div>
+
+      <div>
+        This is an unofficial fan site.
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("nav");
+
+    hamburger.addEventListener("click", () => {
+      nav.classList.toggle("open");
+    });
+
+    // スマホでメニューを選択したら閉じる
+    document.querySelectorAll(".nav a").forEach(link => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("open");
+      });
+    });
+  </script>
+
+</body>
+</html>
