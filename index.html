@@ -901,62 +901,46 @@
 
         // 3. ニュース一覧の自動反映
         if (data && data.news && data.news.length > 0) {
-          const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content');
+          const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content') || document.querySelector('#news');
           if (newsContainer) {
             const listEl = newsContainer.querySelector('ul') || newsContainer.querySelector('.news-items') || newsContainer;
-            listEl.innerHTML = '';
+            
+            // 既存のリストだけを差し替え
+            if (listEl) {
+              listEl.innerHTML = '';
 
-            data.news.forEach(item => {
-              let cleanTitle = item.title.replace(/^(TICKET|EVENT|OTHER|GAME|CLUB)\s*\d{4}\/\d{1,2}\/\d{1,2}\s*/i, '');
+              data.news.forEach(item => {
+                let cleanTitle = item.title.replace(/^(TICKET|EVENT|OTHER|GAME|CLUB)\s*\d{4}\/\d{1,2}\/\d{1,2}\s*/i, '');
 
-              const row = document.createElement('div');
-              row.style.display = 'flex';
-              row.style.alignItems = 'center';
-              row.style.padding = '12px 0';
-              row.style.borderBottom = '1px solid #eee';
-              row.style.gap = '16px';
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.alignItems = 'center';
+                row.style.padding = '12px 0';
+                row.style.borderBottom = '1px solid #eee';
+                row.style.gap = '16px';
 
-              row.innerHTML = `
-                <span style="color: #888; font-size: 13px; min-width: 90px; flex-shrink: 0;">${item.date}</span>
-                <a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color: #333; text-decoration: none; font-size: 14px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                  ${cleanTitle}
-                </a>
-              `;
-              listEl.appendChild(row);
-            });
+                row.innerHTML = `
+                  <span style="color: #888; font-size: 13px; min-width: 90px; flex-shrink: 0;">${item.date}</span>
+                  <a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color: #333; text-decoration: none; font-size: 14px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${cleanTitle}
+                  </a>
+                `;
+                listEl.appendChild(row);
+              });
+            }
           }
         }
 
-        // 4. 試合予定 (SCHEDULE) の自動反映（固定表示の完全上書き・削除）
+        // 4. 試合予定 (SCHEDULE) の安全な自動反映
         if (data && data.schedule) {
-          // 「試合予定」セクション内のリスト描画対象を探す
-          let scheduleTarget = null;
-          const allElements = document.querySelectorAll('div, section');
-          
-          allElements.forEach(el => {
-            const text = el.innerText || '';
-            if (text.includes('試合予定') && text.includes('SCHEDULE') && !scheduleTarget) {
-              scheduleTarget = el;
-            }
-          });
+          // ピンポイントで試合予定のコンテナを取得
+          const scheduleContainer = document.querySelector('.schedule-list') || 
+                                    document.querySelector('.schedule-items') || 
+                                    document.querySelector('#schedule .main-content') || 
+                                    document.querySelector('#schedule ul');
 
-          if (!scheduleTarget) {
-            scheduleTarget = document.getElementById('schedule') || document.querySelector('.schedule-section');
-          }
-
-          if (scheduleTarget) {
-            // 見出し(h2/h3/SCHEDULE)以外の固定データ（カード類）をすべて削除
-            const children = Array.from(scheduleTarget.children);
-            children.forEach(child => {
-              const tag = child.tagName.toLowerCase();
-              if (tag !== 'h2' && tag !== 'h3' && !child.classList.contains('section-title') && !child.classList.contains('schedule-header')) {
-                child.remove();
-              }
-            });
-
-            // 新しいリスト作成コンテナ
-            const listContainer = document.createElement('div');
-            listContainer.className = 'schedule-dynamic-list';
+          if (scheduleContainer) {
+            scheduleContainer.innerHTML = ''; // 試合予定のリスト内だけをクリア
 
             if (data.schedule.length > 0) {
               data.schedule.forEach(item => {
@@ -983,13 +967,11 @@
                     ${item.time}
                   </div>
                 `;
-                listContainer.appendChild(card);
+                scheduleContainer.appendChild(card);
               });
             } else {
-              listContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">現在予定されている試合はありません</p>';
+              scheduleContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">現在予定されている試合はありません</p>';
             }
-
-            scheduleTarget.appendChild(listContainer);
           }
         }
       })
