@@ -43,10 +43,7 @@
       text-decoration: none;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
+    /* HEADER */
     .header {
       background: var(--navy);
       color: white;
@@ -142,16 +139,17 @@
       background: white;
     }
 
-    /* =========================
-       HERO
-    ========================= */
-
-.hero {
-  background: 
-    linear-gradient(90deg, rgba(6, 25, 49, 0.88), rgba(6, 25, 49, 0.65)),
-    url('images/stadium.jpg') center/cover no-repeat;
-  color: white;
-}
+    /* HERO */
+    .hero {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(6, 25, 49, 0.88),
+          rgba(6, 25, 49, 0.65)
+        ),
+        url('images/stadium.jpg') center/cover no-repeat;
+      color: white;
+    }
 
     .hero-inner {
       max-width: 1200px;
@@ -232,10 +230,7 @@
       font-size: 12px;
     }
 
-    /* =========================
-       MAIN
-    ========================= */
-
+    /* MAIN */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -272,10 +267,7 @@
       letter-spacing: .1em;
     }
 
-    /* =========================
-       NEWS
-    ========================= */
-
+    /* NEWS */
     .news-list {
       background: white;
       border: 1px solid var(--border);
@@ -316,10 +308,7 @@
       font-weight: 700;
     }
 
-    /* =========================
-       CHAT
-    ========================= */
-
+    /* CHAT */
     .chat-box {
       background: var(--navy);
       color: white;
@@ -349,10 +338,7 @@
       font-size: 13px;
     }
 
-    /* =========================
-       SCHEDULE
-    ========================= */
-
+    /* SCHEDULE */
     .schedule {
       display: grid;
       gap: 8px;
@@ -389,10 +375,7 @@
       font-weight: 900;
     }
 
-    /* =========================
-       SIDEBAR
-    ========================= */
-
+    /* SIDEBAR */
     .side-box {
       background: white;
       border: 1px solid var(--border);
@@ -443,10 +426,7 @@
       color: var(--blue);
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
-
+    /* FOOTER */
     footer {
       background: #07182d;
       color: #8294a9;
@@ -461,10 +441,7 @@
       justify-content: space-between;
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
-
+    /* MOBILE */
     @media (max-width: 800px) {
       .header-inner {
         height: 62px;
@@ -594,7 +571,7 @@
 
         <div class="score">
           <div class="score-date">
-            2026.10.03　レギュラーシーズン
+            2026.10.03 レギュラーシーズン
           </div>
 
           <div class="teams">
@@ -864,7 +841,6 @@
       nav.classList.toggle("open");
     });
 
-    // スマホでメニューを選択したら閉じる
     document.querySelectorAll(".nav a").forEach(link => {
       link.addEventListener("click", () => {
         nav.classList.remove("open");
