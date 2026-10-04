@@ -42,33 +42,51 @@
   "news": [
     {
       "date": "2026/10/4",
-      "category": "TICKET",
       "title": "TICKET2026/10/410/4(日)阪神戦のチケットは完売いたしましたEVENT2026/10/3【DeNAランナーズアカデミー】親子で「学ぶ！遊ぶ！体感する！」ハロウィンイベント2026 参加者募集OTHER2026/10/2キャリア採用募集職種に「オフィシャルムービーカメラマン／業務委託」追加のお知らせEVENT2026/10/2THE BAYS YOGA／歴史的文化財で楽しむヨガイベント開催EVENT2026/10/210/4(日)「FINAL CEREMONY 2026」開催概要APP2026/10/1【MY BAYSTARS】THE STAGE IS SETガチャ&「2026 JERA クライマックスシリーズ セ」進出キャンペーン開始！TICKET2026/10/1『SEASON SEAT 2027』の販売についてEVENT2026/10/1【キッズベースボールフェスティバル2026】小学校5・6年生を対象にした野球体験イベントの募集を開始いたします！GOODS2026/10/110/2(金)リボンマグネットやマスコットグッズ、diana2026ブラインドグッズが新登場！",
       "url": "https://www.baystars.co.jp/news/2026/10/1004_10.php"
     },
     {
       "date": "2026/10/4",
-      "category": "TICKET",
       "title": "TICKET2026/10/410/4(日)阪神戦のチケットは完売いたしました",
       "url": "https://www.baystars.co.jp/news/2026/10/1004_10.php"
     },
     {
       "date": "2026/10/3",
-      "category": "EVENT",
       "title": "EVENT2026/10/3【DeNAランナーズアカデミー】親子で「学ぶ！遊ぶ！体感する！」ハロウィンイベント2026 参加者募集",
       "url": "https://www.baystars.co.jp/news/2026/10/1003_01.php"
     },
     {
       "date": "2026/10/2",
-      "category": "OTHER",
       "title": "OTHER2026/10/2キャリア採用募集職種に「オフィシャルムービーカメラマン／業務委託」追加のお知らせ",
       "url": "https://www.baystars.co.jp/news/2026/10/1002_02.php"
     },
     {
       "date": "2026/10/2",
-      "category": "EVENT",
       "title": "EVENT2026/10/2THE BAYS YOGA／歴史的文化財で楽しむヨガイベント開催",
       "url": "https://www.baystars.co.jp/news/2026/10/1002_04.php"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "10.04",
+      "day": "SUN",
+      "matchup": "DeNA vs 巨人",
+      "stadium": "横浜スタジアム",
+      "time": "14:00"
+    },
+    {
+      "date": "10.05",
+      "day": "MON",
+      "matchup": "DeNA vs 阪神",
+      "stadium": "横浜スタジアム",
+      "time": "18:00"
+    },
+    {
+      "date": "10.07",
+      "day": "WED",
+      "matchup": "DeNA vs 広島",
+      "stadium": "マツダスタジアム",
+      "time": "18:00"
     }
   ]
 }
