@@ -1,5 +1,4 @@
 import json
-import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -39,12 +38,11 @@ def fetch_baystars_game():
                             "home_team": team_elems[0].get_text(strip=True),
                             "home_score": score_elems[0].get_text(strip=True),
                             "away_team": team_elems[1].get_text(strip=True),
-                            "away_score": score_elems[1].get_text(strip=True)
+                            "away_score": score_elems[2 if len(score_elems)>2 else 1].get_text(strip=True) if len(score_elems) > 1 else score_elems[0].get_text(strip=True)
                         }
     except Exception as e:
         print(f"Game fetch error: {e}")
 
-    # フォールバックデータ
     return {
         "date": "10月4日(日)",
         "status": "試合終了",
@@ -62,40 +60,53 @@ def fetch_standings():
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
             
-            # セ・リーグのテーブルを探す
+            # セ・リーグのテーブルを取得
             tables = soup.find_all("table")
             for table in tables:
                 text = table.get_text()
                 if "DeNA" in text or "巨人" in text or "阪神" in text:
-                    standings = []
                     rows = table.find_all("tr")
-                    rank_count = 1
+                    standings = []
+                    
                     for row in rows:
                         cells = row.find_all(["td", "th"])
                         cell_texts = [c.get_text(strip=True) for c in cells]
                         
-                        # チーム名が含まれている行を抽出
-                        for team in ["阪神", "DeNA", "ＤｅＮＡ", "巨人", "広島", "中日", "ヤクルト"]:
-                            if any(team in t for t in cell_texts):
-                                team_name = "DeNA" if "ＤｅＮＡ" in team or "DeNA" in team else team
-                                # ゲーム差を取得（行内の数値や文字から探す）
-                                games_behind = cell_texts[-1] if len(cell_texts) > 2 else "---"
-                                if games_behind == "0" or games_behind == "0.0":
-                                    games_behind = "---"
-                                
-                                standings.append({
-                                    "rank": rank_count,
-                                    "team": team_name,
-                                    "games_behind": games_behind
-                                })
-                                rank_count += 1
+                        # 行テキスト全体の結合
+                        row_text = "".join(cell_texts)
+                        
+                        # 該当チームの行かチェック
+                        target_team = None
+                        for t in ["阪神", "DeNA", "ＤｅＮＡ", "巨人", "広島", "中日", "ヤクルト"]:
+                            if t in row_text:
+                                target_team = "DeNA" if "DeNA" in t or "ＤｅＮＡ" in t else t
                                 break
+                        
+                        if target_team:
+                            # ゲーム差（一般的に差の列、またはハイフン/数字を含むセル）を判別
+                            gb = "---"
+                            if len(cell_texts) >= 8:
+                                # ゲーム差列（通常8〜10列目付近）を抽出
+                                candidate = cell_texts[7] if len(cell_texts) > 7 else cell_texts[-1]
+                                if candidate in ["0", "0.0", "-", "ー"]:
+                                    gb = "---"
+                                else:
+                                    gb = candidate
+                            elif len(cell_texts) > 2:
+                                gb = cell_texts[-1] if cell_texts[-1] not in ["0", "0.0", "-"] else "---"
+
+                            standings.append({
+                                "rank": len(standings) + 1,
+                                "team": target_team,
+                                "games_behind": gb
+                            })
+                    
                     if len(standings) >= 6:
                         return standings[:6]
     except Exception as e:
         print(f"Standings fetch error: {e}")
 
-    # フォールバックデータ（取得できない場合）
+    # 取得失敗・オフシーズンの場合のフォールバックデータ
     return [
         {"rank": 1, "team": "阪神", "games_behind": "---"},
         {"rank": 2, "team": "DeNA", "games_behind": "2.5"},
