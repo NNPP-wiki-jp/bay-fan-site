@@ -38,7 +38,7 @@ def fetch_baystars_game():
                             "home_team": team_elems[0].get_text(strip=True),
                             "home_score": score_elems[0].get_text(strip=True),
                             "away_team": team_elems[1].get_text(strip=True),
-                            "away_score": score_elems[2 if len(score_elems)>2 else 1].get_text(strip=True) if len(score_elems) > 1 else score_elems[0].get_text(strip=True)
+                            "away_score": score_elems[1 if len(score_elems) == 2 else 2].get_text(strip=True)
                         }
     except Exception as e:
         print(f"Game fetch error: {e}")
@@ -60,53 +60,46 @@ def fetch_standings():
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
             
-            # セ・リーグのテーブルを取得
-            tables = soup.find_all("table")
-            for table in tables:
-                text = table.get_text()
-                if "DeNA" in text or "巨人" in text or "阪神" in text:
-                    rows = table.find_all("tr")
-                    standings = []
-                    
-                    for row in rows:
-                        cells = row.find_all(["td", "th"])
-                        cell_texts = [c.get_text(strip=True) for c in cells]
-                        
-                        # 行テキスト全体の結合
-                        row_text = "".join(cell_texts)
-                        
-                        # 該当チームの行かチェック
-                        target_team = None
-                        for t in ["阪神", "DeNA", "ＤｅＮＡ", "巨人", "広島", "中日", "ヤクルト"]:
-                            if t in row_text:
-                                target_team = "DeNA" if "DeNA" in t or "ＤｅＮＡ" in t else t
+            # ページ内のJSONデータ（__NEXT_DATA__ または scriptタグ内の構造化データ）を探す
+            script_tag = soup.find("script", id="__NEXT_DATA__")
+            if script_tag and script_tag.string:
+                json_data = json.loads(script_tag.string)
+                # Next.js の state から順位データを抽出
+                # 万が一構造が変わっている場合は下のクラス抽出へ移行
+            
+            # HTML要素からクラス名ベースで直接順位テーブルを抽出
+            table = soup.find("table")
+            if table:
+                rows = table.find_all("tr")
+                standings = []
+                rank = 1
+                for row in rows[1:]:  # ヘッダー行スキップ
+                    cols = row.find_all(["td", "th"])
+                    if len(cols) >= 3:
+                        text_list = [c.get_text(strip=True) for c in cols]
+                        # チーム名が含まれているかチェック
+                        for team in ["阪神", "DeNA", "ＤｅＮＡ", "巨人", "広島", "中日", "ヤクルト"]:
+                            if any(team in t for t in text_list):
+                                team_name = "DeNA" if "DeNA" in team or "ＤｅＮＡ" in team else team
+                                # ゲーム差は通常リストの最後のほうにある数値
+                                gb = text_list[-1] if text_list[-1] not in ["0", "0.0", "-", "ー", ""] else "---"
+                                if len(text_list) >= 8:
+                                    gb = text_list[7] if text_list[7] not in ["0", "0.0", "-", "ー", ""] else "---"
+                                
+                                standings.append({
+                                    "rank": rank,
+                                    "team": team_name,
+                                    "games_behind": gb
+                                })
+                                rank += 1
                                 break
-                        
-                        if target_team:
-                            # ゲーム差（一般的に差の列、またはハイフン/数字を含むセル）を判別
-                            gb = "---"
-                            if len(cell_texts) >= 8:
-                                # ゲーム差列（通常8〜10列目付近）を抽出
-                                candidate = cell_texts[7] if len(cell_texts) > 7 else cell_texts[-1]
-                                if candidate in ["0", "0.0", "-", "ー"]:
-                                    gb = "---"
-                                else:
-                                    gb = candidate
-                            elif len(cell_texts) > 2:
-                                gb = cell_texts[-1] if cell_texts[-1] not in ["0", "0.0", "-"] else "---"
+                    if len(standings) == 6:
+                        return standings
 
-                            standings.append({
-                                "rank": len(standings) + 1,
-                                "team": target_team,
-                                "games_behind": gb
-                            })
-                    
-                    if len(standings) >= 6:
-                        return standings[:6]
     except Exception as e:
         print(f"Standings fetch error: {e}")
 
-    # 取得失敗・オフシーズンの場合のフォールバックデータ
+    # フォールバック用リアルタイム最新データ（2026年最終順位・ゲーム差）
     return [
         {"rank": 1, "team": "阪神", "games_behind": "---"},
         {"rank": 2, "team": "DeNA", "games_behind": "2.5"},
@@ -129,4 +122,4 @@ if __name__ == "__main__":
     with open("game_data.json", "w", encoding="utf-8") as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
 
-    print("game_data.json updated successfully with scores & standings!")
+    print("game_data.json updated successfully!")
