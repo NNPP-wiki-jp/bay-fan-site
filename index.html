@@ -833,22 +833,24 @@
   </footer>
 
 
-  <script>
+<script>
     // ハンバーガーメニュー制御
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
 
-    hamburger.addEventListener("click", () => {
-      nav.classList.toggle("open");
-    });
-
-    document.querySelectorAll(".nav a").forEach(link => {
-      link.addEventListener("click", () => {
-        nav.classList.remove("open");
+    if (hamburger && nav) {
+      hamburger.addEventListener("click", () => {
+        nav.classList.toggle("open");
       });
-    });
 
-    // game_data.jsonから最新試合スコアを自動取得・反映
+      document.querySelectorAll(".nav a").forEach(link => {
+        link.addEventListener("click", () => {
+          nav.classList.remove("open");
+        });
+      });
+    }
+
+    // game_data.jsonから最新試合スコアと順位表を自動取得・反映
     fetch('game_data.json?cache=' + new Date().getTime())
       .then(response => {
         if (!response.ok) {
@@ -857,17 +859,50 @@
         return response.json();
       })
       .then(data => {
+        // 1. 最新試合スコアの反映
         if (data && data.latest_game) {
           const game = data.latest_game;
-          document.getElementById('score-date').textContent = game.date + ' ' + (game.status || 'レギュラーシーズン');
-          document.getElementById('home-team').textContent = game.home_team;
-          document.getElementById('home-score').textContent = game.home_score;
-          document.getElementById('away-team').textContent = game.away_team;
-          document.getElementById('away-score').textContent = game.away_score;
+          const scoreDateEl = document.getElementById('score-date');
+          const homeTeamEl = document.getElementById('home-team');
+          const homeScoreEl = document.getElementById('home-score');
+          const awayTeamEl = document.getElementById('away-team');
+          const awayScoreEl = document.getElementById('away-score');
+
+          if (scoreDateEl) scoreDateEl.textContent = (game.date || '') + ' ' + (game.status || '');
+          if (homeTeamEl) homeTeamEl.textContent = game.home_team || 'DeNA';
+          if (homeScoreEl) homeScoreEl.textContent = game.home_score || '-';
+          if (awayTeamEl) awayTeamEl.textContent = game.away_team || '相手';
+          if (awayScoreEl) awayScoreEl.textContent = game.away_score || '-';
+        }
+
+        // 2. セ・リーグ順位表の自動反映
+        if (data && data.standings && data.standings.length > 0) {
+          // 順位表が入っているコンテナを取得
+          const rankingSection = document.getElementById('ranking') || document.querySelector('.side-box');
+          if (rankingSection) {
+            const container = rankingSection.querySelector('.side-content') || rankingSection;
+            container.innerHTML = ''; // 既存の静的ダミー行をクリア
+
+            data.standings.forEach(item => {
+              const row = document.createElement('div');
+              row.style.display = 'flex';
+              row.style.justifyContent = 'space-between';
+              row.style.padding = '8px 12px';
+              row.style.borderBottom = '1px solid #eee';
+              row.style.fontSize = '14px';
+
+              row.innerHTML = `
+                <span style="font-weight: bold; width: 20px;">${item.rank}</span>
+                <span style="flex-grow: 1; margin-left: 10px;">${item.team}</span>
+                <span style="color: #666;">${item.games_behind}</span>
+              `;
+              container.appendChild(row);
+            });
+          }
         }
       })
       .catch(error => {
-        console.log('データ未設定または取得エラー:', error);
+        console.log('データ反映エラー:', error);
       });
   </script>
 
