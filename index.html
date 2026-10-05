@@ -338,43 +338,6 @@
       font-size: 13px;
     }
 
-    /* SCHEDULE */
-    .schedule {
-      display: grid;
-      gap: 8px;
-    }
-
-    .game {
-      background: white;
-      border: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 85px 1fr 80px;
-      align-items: center;
-      padding: 13px 16px;
-    }
-
-    .game-date {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .game-opponent {
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .game-place {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .game-time {
-      text-align: right;
-      color: var(--blue);
-      font-size: 14px;
-      font-weight: 900;
-    }
-
     /* SIDEBAR */
     .side-box {
       background: white;
@@ -502,11 +465,6 @@
         font-size: 13px;
       }
 
-      .game {
-        grid-template-columns: 70px 1fr 60px;
-        padding: 12px;
-      }
-
       .footer-inner {
         flex-direction: column;
         gap: 8px;
@@ -533,7 +491,6 @@
         <a href="#" class="active">ホーム</a>
         <a href="#chat">雑談</a>
         <a href="#results">試合結果</a>
-        <a href="#schedule">試合予定</a>
         <a href="#news">ニュース</a>
         <a href="#ranking">順位表</a>
       </nav>
@@ -547,7 +504,6 @@
     </div>
   </header>
 
-
   <!-- HERO -->
   <section class="hero">
     <div class="hero-inner">
@@ -560,7 +516,7 @@
 
         <p class="hero-description">
           横浜DeNAベイスターズを応援するファンサイト。<br>
-          試合結果、試合予定、ニュース、ファン同士の雑談まで。
+          試合結果、ニュース、ファン同士の雑談まで。
         </p>
       </div>
 
@@ -593,13 +549,11 @@
     </div>
   </section>
 
-
   <!-- MAIN -->
   <main class="container">
 
     <div class="layout">
 
-      <!-- CONTENT -->
       <div>
 
         <!-- NEWS -->
@@ -655,67 +609,6 @@
           </div>
         </section>
 
-
-        <!-- SCHEDULE -->
-        <section class="section" id="schedule">
-
-          <div class="section-heading">
-            <h2>試合予定</h2>
-            <span>SCHEDULE</span>
-          </div>
-
-          <div class="schedule">
-
-            <div class="game">
-              <div class="game-date">10.04<br>SUN</div>
-
-              <div>
-                <div class="game-opponent">
-                  DeNA vs 巨人
-                </div>
-                <div class="game-place">
-                  横浜スタジアム
-                </div>
-              </div>
-
-              <div class="game-time">14:00</div>
-            </div>
-
-            <div class="game">
-              <div class="game-date">10.05<br>MON</div>
-
-              <div>
-                <div class="game-opponent">
-                  DeNA vs 阪神
-                </div>
-                <div class="game-place">
-                  横浜スタジアム
-                </div>
-              </div>
-
-              <div class="game-time">18:00</div>
-            </div>
-
-            <div class="game">
-              <div class="game-date">10.07<br>WED</div>
-
-              <div>
-                <div class="game-opponent">
-                  DeNA vs 広島
-                </div>
-                <div class="game-place">
-                  マツダスタジアム
-                </div>
-              </div>
-
-              <div class="game-time">18:00</div>
-            </div>
-
-          </div>
-
-        </section>
-
-
         <!-- CHAT -->
         <section class="section" id="chat">
 
@@ -740,11 +633,9 @@
 
       </div>
 
-
       <!-- SIDEBAR -->
       <aside>
 
-        <!-- RANKING -->
         <div class="side-box" id="ranking">
 
           <div class="side-title">
@@ -792,7 +683,6 @@
           </div>
         </div>
 
-
         <!-- LINKS -->
         <div class="side-box">
 
@@ -803,7 +693,6 @@
           <div class="side-content links">
 
             <a href="#">試合結果一覧 →</a>
-            <a href="#">試合予定一覧 →</a>
             <a href="#">選手名鑑 →</a>
             <a href="#">チーム成績 →</a>
             <a href="#">過去の試合 →</a>
@@ -818,7 +707,6 @@
 
   </main>
 
-
   <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
@@ -832,7 +720,7 @@
     </div>
   </footer>
 
-<script>
+  <script>
     // ハンバーガーメニュー制御
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
@@ -849,7 +737,7 @@
       });
     }
 
-    // game_data.jsonから全データを自動取得・反映（スコア・順位表・ニュースのみ）
+    // game_data.jsonから全データを自動取得・反映
     fetch('game_data.json?cache=' + new Date().getTime())
       .then(response => {
         if (!response.ok) {
@@ -858,31 +746,51 @@
         return response.json();
       })
       .then(data => {
-        // 1. 最新試合スコアの反映
+
+        // 最新試合スコア
         if (data && data.latest_game) {
           const game = data.latest_game;
+
           const scoreDateEl = document.getElementById('score-date');
           const homeTeamEl = document.getElementById('home-team');
           const homeScoreEl = document.getElementById('home-score');
           const awayTeamEl = document.getElementById('away-team');
           const awayScoreEl = document.getElementById('away-score');
 
-          if (scoreDateEl) scoreDateEl.textContent = (game.date || '') + ' ' + (game.status || '');
-          if (homeTeamEl) homeTeamEl.textContent = game.home_team || 'DeNA';
-          if (homeScoreEl) homeScoreEl.textContent = game.home_score || '-';
-          if (awayTeamEl) awayTeamEl.textContent = game.away_team || '相手';
-          if (awayScoreEl) awayScoreEl.textContent = game.away_score || '-';
+          if (scoreDateEl)
+            scoreDateEl.textContent =
+              (game.date || '') + ' ' + (game.status || '');
+
+          if (homeTeamEl)
+            homeTeamEl.textContent = game.home_team || 'DeNA';
+
+          if (homeScoreEl)
+            homeScoreEl.textContent = game.home_score || '-';
+
+          if (awayTeamEl)
+            awayTeamEl.textContent = game.away_team || '相手';
+
+          if (awayScoreEl)
+            awayScoreEl.textContent = game.away_score || '-';
         }
 
-        // 2. セ・リーグ順位表の自動反映
+        // セ・リーグ順位表
         if (data && data.standings && data.standings.length > 0) {
-          const rankingSection = document.getElementById('ranking') || document.querySelector('.side-box');
+
+          const rankingSection =
+            document.getElementById('ranking');
+
           if (rankingSection) {
-            const container = rankingSection.querySelector('.side-content') || rankingSection;
+
+            const container =
+              rankingSection.querySelector('.side-content');
+
             container.innerHTML = '';
 
             data.standings.forEach(item => {
+
               const row = document.createElement('div');
+
               row.style.display = 'flex';
               row.style.justifyContent = 'space-between';
               row.style.padding = '8px 12px';
@@ -890,44 +798,82 @@
               row.style.fontSize = '14px';
 
               row.innerHTML = `
-                <span style="font-weight: bold; width: 20px;">${item.rank}</span>
-                <span style="flex-grow: 1; margin-left: 10px;">${item.team}</span>
-                <span style="color: #666;">${item.games_behind}</span>
+                <span style="font-weight:bold;width:20px;">
+                  ${item.rank}
+                </span>
+
+                <span style="flex-grow:1;margin-left:10px;">
+                  ${item.team}
+                </span>
+
+                <span style="color:#666;">
+                  ${item.games_behind}
+                </span>
               `;
+
               container.appendChild(row);
             });
           }
         }
 
-        // 3. ニュース一覧の自動反映（リンク付き）
+        // ニュース
         if (data && data.news && data.news.length > 0) {
-          const newsContainer = document.querySelector('.news-list') || document.querySelector('#news .main-content') || document.querySelector('#news');
+
+          const newsContainer =
+            document.querySelector('.news-list');
+
           if (newsContainer) {
-            const listEl = newsContainer.querySelector('ul') || newsContainer.querySelector('.news-items') || newsContainer;
-            if (listEl) {
-              listEl.innerHTML = '';
 
-              data.news.forEach(item => {
-                let cleanTitle = item.title.replace(/^(TICKET|EVENT|OTHER|GAME|CLUB)\s*\d{4}\/\d{1,2}\/\d{1,2}\s*/i, '');
+            newsContainer.innerHTML = '';
 
-                const row = document.createElement('div');
-                row.style.display = 'flex';
-                row.style.alignItems = 'center';
-                row.style.padding = '12px 0';
-                row.style.borderBottom = '1px solid #eee';
-                row.style.gap = '16px';
+            data.news.forEach(item => {
 
-                row.innerHTML = `
-                  <span style="color: #888; font-size: 13px; min-width: 90px; flex-shrink: 0;">${item.date}</span>
-                  <a href="${item.url}" target="_blank" rel="noopener noreferrer" style="color: #333; text-decoration: none; font-size: 14px; flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    ${cleanTitle}
-                  </a>
-                `;
-                listEl.appendChild(row);
-              });
-            }
+              let cleanTitle = item.title.replace(
+                /^(TICKET|EVENT|OTHER|GAME|CLUB)\s*\d{4}\/\d{1,2}\/\d{1,2}\s*/i,
+                ''
+              );
+
+              const row = document.createElement('div');
+
+              row.style.display = 'flex';
+              row.style.alignItems = 'center';
+              row.style.padding = '12px 0';
+              row.style.borderBottom = '1px solid #eee';
+              row.style.gap = '16px';
+
+              row.innerHTML = `
+                <span style="
+                  color:#888;
+                  font-size:13px;
+                  min-width:90px;
+                  flex-shrink:0;
+                ">
+                  ${item.date}
+                </span>
+
+                <a
+                  href="${item.url}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="
+                    color:#333;
+                    text-decoration:none;
+                    font-size:14px;
+                    flex-grow:1;
+                    white-space:nowrap;
+                    overflow:hidden;
+                    text-overflow:ellipsis;
+                  "
+                >
+                  ${cleanTitle}
+                </a>
+              `;
+
+              newsContainer.appendChild(row);
+            });
           }
         }
+
       })
       .catch(error => {
         console.log('データ反映エラー:', error);
