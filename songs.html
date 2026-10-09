@@ -139,7 +139,7 @@
       background: white;
     }
 
-/* HERO / BANNER */
+    /* HERO / BANNER */
     .hero {
       position: relative;
       background:
@@ -174,12 +174,6 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 42px 24px 80px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
-      gap: 36px;
     }
 
     .section {
@@ -249,40 +243,6 @@
       font-weight: 700;
     }
 
-    /* SIDEBAR */
-    .side-box {
-      background: white;
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
-    }
-
-    .side-title {
-      padding: 13px 16px;
-      background: var(--navy);
-      color: white;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .side-content {
-      padding: 17px;
-    }
-
-    .links a {
-      display: block;
-      padding: 9px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-    }
-
-    .links a:last-child {
-      border-bottom: none;
-    }
-
-    .links a:hover {
-      color: var(--blue);
-    }
-
     /* FOOTER */
     footer {
       background: #07182d;
@@ -335,10 +295,6 @@
         padding: 30px 16px 60px;
       }
 
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
       .footer-inner {
         flex-direction: column;
         gap: 8px;
@@ -381,78 +337,50 @@
   <!-- HERO / BANNER -->
   <section class="hero">
     <div class="hero-inner">
+      <h1>チャンステーマ・応援歌</h1>
     </div>
   </section>
 
   <!-- MAIN -->
   <main class="container">
 
-    <div class="layout">
+    <!-- SONGS SECTION -->
+    <section class="section">
 
-      <div>
-
-        <!-- SONGS SECTION -->
-        <section class="section">
-
-          <div class="section-heading">
-            <h2>選手テーマ曲・応援歌</h2>
-            <span>SONGS</span>
-          </div>
-
-          <div class="song-grid">
-            <div class="song-card">
-              <span class="player-number">#0</span>
-              <div class="player-name">牧 秀悟</div>
-              <div class="song-detail">【応援歌】</div>
-              <div class="song-title">オオオオーオオ マキシュウゴ！</div>
-            </div>
-
-            <div class="song-card">
-              <span class="player-number">#51</span>
-              <div class="player-name">宮﨑 敏郎</div>
-              <div class="song-detail">【応援歌】</div>
-              <div class="song-title">気迫あふれるパワーで…</div>
-            </div>
-
-            <div class="song-card">
-              <span class="player-number">#1</span>
-              <div class="player-name">桑原 将志</div>
-              <div class="song-detail">【応援歌】</div>
-              <div class="song-title">熱き闘志を燃やして走れ…</div>
-            </div>
-
-            <div class="song-card">
-              <span class="player-number">#63</span>
-              <div class="player-name">関根 大気</div>
-              <div class="song-detail">【応援歌】</div>
-              <div class="song-title">韋駄天の脚で駆け抜けろ…</div>
-            </div>
-          </div>
-
-        </section>
-
+      <div class="section-heading">
+        <h2>選手テーマ曲・応援歌</h2>
+        <span>SONGS</span>
       </div>
 
-      <!-- SIDEBAR -->
-      <aside>
-
-        <!-- LINKS -->
-        <div class="side-box">
-          <div class="side-title">
-            CONTENTS
-          </div>
-          <div class="side-content links">
-            <a href="index.html">🏠 ホームに戻る</a>
-            <a href="https://x.com/ydb_yokohama" target="_blank" rel="noopener noreferrer">球団公式 X (Twitter) →</a>
-            <a href="https://www.youtube.com/@baystarsofficial" target="_blank" rel="noopener noreferrer">公式YouTubeチャンネル →</a>
-            <a href="https://sp.baystars.co.jp/ticket/" target="_blank" rel="noopener noreferrer">チケット情報 →</a>
-            <a href="https://www.baystars.co.jp/" target="_blank" rel="noopener noreferrer">横浜DeNAベイスターズ公式サイト →</a>
-          </div>
+      <div class="song-grid">
+        <div class="song-card">
+          <div class="player-name">投手のテーマ（右）</div>
+          <div class="song-detail">【歌詞】</div>
+          <div class="song-title">たたかうぞ 闘志みなぎらせて<br>勝利の海 行くぞベイスターズ<br>かっとばせ選手名</div>
         </div>
 
-      </aside>
+        <div class="song-card">
+          <div class="player-name">先発左腕のテーマ（左）</div>
+          <div class="song-detail">【歌詞】</div>
+          <div class="song-title">左腕がうなれば　狙いははずさない<br>ピンポイントの技　攻めて攻めろ 選手名<br>かっとばせ選手名</div>
+        </div>
 
-    </div>
+        <div class="song-card">
+          <span class="player-number">#1</span>
+          <div class="player-name">桑原 将志</div>
+          <div class="song-detail">【応援歌】</div>
+          <div class="song-title"></div>
+        </div>
+
+        <div class="song-card">
+          <span class="player-number">#63</span>
+          <div class="player-name">関根 大気</div>
+          <div class="song-detail">【応援歌】</div>
+          <div class="song-title">韋駄天の脚で駆け抜けろ…</div>
+        </div>
+      </div>
+
+    </section>
 
   </main>
 
