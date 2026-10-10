@@ -161,14 +161,6 @@
       z-index: 2;
     }
 
-    .hero h1 {
-      font-size: clamp(26px, 4vw, 42px);
-      line-height: 1.2;
-      letter-spacing: .04em;
-      font-weight: 900;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
     /* MAIN */
     .container {
       max-width: 1200px;
@@ -177,7 +169,7 @@
     }
 
     .section {
-      margin-bottom: 42px;
+      margin-bottom: 50px;
     }
 
     .section-heading {
@@ -213,17 +205,6 @@
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-    }
-
-    .player-number {
-      display: inline-block;
-      background: var(--light-blue);
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-bottom: 8px;
     }
 
     .player-name {
@@ -337,18 +318,18 @@
   <!-- HERO / BANNER -->
   <section class="hero">
     <div class="hero-inner">
+      <h1>チャンステーマ・応援歌</h1>
     </div>
   </section>
 
   <!-- MAIN -->
   <main class="container">
 
-    <!-- SONGS SECTION -->
+    <!-- 1. 投手応援歌 -->
     <section class="section">
-
       <div class="section-heading">
-        <h2>選手テーマ曲・応援歌</h2>
-        <span>SONGS</span>
+        <h2>投手応援歌</h2>
+        <span>PITCHERS</span>
       </div>
 
       <div class="song-grid">
@@ -369,7 +350,17 @@
           <div class="song-detail">【歌詞】</div>
           <div class="song-title">オイ！ オイ！<br>選手名！ 選手名！<br>ゴー！ ゴー！ 【選手名】！</div>
         </div>
+      </div>
+    </section>
 
+    <!-- 2. 野手応援歌 -->
+    <section class="section">
+      <div class="section-heading">
+        <h2>野手応援歌</h2>
+        <span>BATTERS</span>
+      </div>
+
+      <div class="song-grid">
         <div class="song-card">
           <div class="player-name">林 琢真</div>
           <div class="song-detail">【歌詞】</div>
@@ -400,34 +391,52 @@
           <div class="song-title">スタジアムのヒーロー 輝く星となれ<br>歓声背に受け<br>ダイヤモンド駆け抜けろ<br>かっとばせ モリケイト</div>
         </div>
 
-<div class="song-card">
+        <div class="song-card">
           <div class="player-name">佐野 恵太</div>
           <div class="song-detail">【歌詞】</div>
           <div class="song-title">蒼き戦士の闘志<br>果敢に突き進め<br>ハマの空に弧を描け 進めShiny Road<br>かっとばせ サノケイタ</div>
         </div>
-      </div>
 
-      <div class="song-card">
+        <div class="song-card">
           <div class="player-name">神里 和毅</div>
           <div class="song-detail">【歌詞】</div>
           <div class="song-title">琉球の波の乗って<br>潮風を背に受け<br>冴えわたる神業 オー島人の星<br>いーやーさーさー カミザト</div>
         </div>
-<div class="song-card">
+
+        <div class="song-card">
           <div class="player-name">京田 陽太</div>
           <div class="song-detail">【歌詞】</div>
           <div class="song-title">さぁ 走りだせ<br>浜風背に受け<br>秘めた思いつないで 輝け京田<br>かっとばせ キョウダ</div>
         </div>
-<div class="song-card">
+
+        <div class="song-card">
           <div class="player-name">戸柱 恭孝</div>
           <div class="song-detail">【歌詞】</div>
           <div class="song-title">奮い立て 横浜の<br>大黒柱よ<br>さぁ打て飛ばせ勝利への 扉を開け<br>かっとばせ トバシラ</div>
         </div>
-<div class="song-card">
+
+        <div class="song-card">
           <div class="player-name">筒香 嘉智</div>
           <div class="song-detail">【歌詞】</div>
           <div class="song-title">横浜の空高く<br>ホームランかっ飛ばせ筒香<br>さぁ打て筒香<br>飛ばせ空の彼方<br>横浜に輝く大砲かっとばせホームラン<br>Go Go 筒香</div>
         </div>
-    </div>
+      </div>
+    </section>
+
+    <!-- 3. チャンステーマ -->
+    <section class="section">
+      <div class="section-heading">
+        <h2>チャンステーマ</h2>
+        <span>CHANCE THEME</span>
+      </div>
+
+      <div class="song-grid">
+        <div class="song-card">
+          <div class="player-name">ALL BAYSTARS</div>
+          <div class="song-detail">【チャンテ】</div>
+          <div class="song-title">オイ！オイ！横浜！<br>オイ！オイ！横浜！<br>横浜奪首！<br>挑め！進め！共に行くぞ横浜！</div>
+        </div>
+      </div>
     </section>
 
   </main>
